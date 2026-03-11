@@ -7,7 +7,7 @@ class GeneratorSource:
     def __init__(self, count: int):
         self.count = count
 
-    def get_task(self) -> Iterable[Task]:
+    def get_tasks(self) -> Iterable[Task]:
         for i in range(self.count):
             yield Task(
                 id=i,

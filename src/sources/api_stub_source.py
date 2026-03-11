@@ -10,7 +10,6 @@ class APIStubSource:
             {"id": 101, "payload": "api_task_2"},
             {"id": 102, "payload": "api_task_3"},
         ]
-    def get_tasks(self) -> Iterable[Tas
-        k]:
+    def get_tasks(self) -> Iterable[Task]:
         for item in self.data:
             yield Task(**item)
