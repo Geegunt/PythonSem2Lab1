@@ -6,4 +6,13 @@ from src.models.task import Task
 
 class TaskReceiver:
     def receive(self, source: TaskSource) -> List[Task]:
-        return list(source.get_tasks())
+        if not isinstance(source, TaskSource):
+            raise TypeError(f"{type(source).__name__} не реализует контракт TaskSource")
+        try:
+            tasks = list(source.get_tasks())
+        except Exception:
+            raise RuntimeError(
+                f"Произошла ошибка при получении задач из источника "
+                f"{type(source).__name__}"
+            )
+        return tasks

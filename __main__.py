@@ -6,21 +6,11 @@ from src.sources.api_stub_source import APIStubSource
 
 
 def main():
-
     receiver = TaskReceiver()
-
-    sources = [
-        GeneratorSource(3),
-        FileSource("data/tasks.json"),
-        APIStubSource()
-    ]
-
+    sources = [GeneratorSource(3), FileSource("data/tasks.json"), APIStubSource()]
     for source in sources:
-
         print(f"\nSource: {source.__class__.__name__}")
-
         tasks = receiver.receive(source)
-
         for task in tasks:
             print(task)
 
