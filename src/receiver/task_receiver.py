@@ -4,6 +4,7 @@ from src.models.task import Task
 
 class TaskReceiver:
     def receive(self, source: TaskSource) -> list[Task]:
+        """Получает и материализует задачи из источника, совместимого с TaskSource."""
         if not isinstance(source, TaskSource):
             raise TypeError(f"{type(source).__name__} не реализует контракт TaskSource")
         try:

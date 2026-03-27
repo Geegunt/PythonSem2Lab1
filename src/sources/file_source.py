@@ -7,9 +7,11 @@ from src.models.task import Task
 
 class FileSource:
     def __init__(self, filepath: str) -> None:
+        """Сохраняет путь к JSON-файлу с задачами."""
         self.filepath: str = filepath
 
     def get_tasks(self) -> Iterable[Task]:
+        """Читает задачи из JSON-файла и возвращает их как объекты Task."""
         try:
             with open(self.filepath, encoding="utf-8") as file:
                 data = json.load(file)

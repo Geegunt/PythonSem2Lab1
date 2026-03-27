@@ -12,6 +12,7 @@ class APIStubTask(TypedDict):
 
 class APIStubSource:
     def __init__(self) -> None:
+        """Подготавливает встроенный набор задач, имитирующий ответ внешнего API."""
         self.data: list[APIStubTask] = [
             {
                 "id": 100,
@@ -34,5 +35,6 @@ class APIStubSource:
         ]
 
     def get_tasks(self) -> Iterable[Task]:
+        """Преобразует данные заглушки в последовательность объектов Task."""
         for item in self.data:
             yield Task(**item)

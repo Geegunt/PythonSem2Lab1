@@ -31,6 +31,7 @@ class Task:
         status: str = "new",
         created_at: datetime | None = None,
     ) -> None:
+        """Создаёт задачу и проверяет корректность переданных данных."""
         resolved_description = description if description is not None else payload
         if resolved_description is None:
             raise TaskDescriptionValidationError(
@@ -45,6 +46,7 @@ class Task:
 
     @property
     def payload(self) -> str:
+        """Возвращает описание задачи под именем из старой версии модели."""
         return self.description
 
     @payload.setter
@@ -53,10 +55,12 @@ class Task:
 
     @property
     def is_ready_for_execution(self) -> bool:
+        """Показывает, готова ли задача к запуску в обработку."""
         return self.status == "new"
 
     @property
     def is_finished(self) -> bool:
+        """Показывает, завершена ли задача успешно или с ошибкой."""
         return self.status in {"done", "failed"}
 
     def __repr__(self) -> str:

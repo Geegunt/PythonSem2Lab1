@@ -7,6 +7,7 @@ from src.sources.api_stub_source import APIStubSource
 
 
 def main() -> None:
+    """Запускает демонстрационную обработку задач из всех доступных источников."""
     receiver = TaskReceiver()
     sources: list[TaskSource] = [
         GeneratorSource(3),
