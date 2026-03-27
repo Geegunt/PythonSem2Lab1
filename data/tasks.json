@@ -1,18 +1,26 @@
 [
   {
     "id": 1,
-    "payload": "file_task_1"
+    "description": "Проверить очередь входящих задач",
+    "priority": 3,
+    "status": "new"
   },
   {
     "id": 2,
-    "payload": "file_task_2"
+    "description": "Подготовить ежедневный отчёт",
+    "priority": 2,
+    "status": "in_progress"
   },
   {
     "id": 3,
-    "payload": "file_task_3"
+    "description": "Отправить напоминание пользователю",
+    "priority": 4,
+    "status": "done"
   },
   {
     "id": 4,
-    "payload": "file_task_4"
+    "description": "Сверить состояние внешнего сервиса",
+    "priority": 5,
+    "status": "failed"
   }
 ]

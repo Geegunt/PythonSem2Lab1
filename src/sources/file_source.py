@@ -1,12 +1,13 @@
 import json
 from typing import Iterable
 
+from src.models.exceptions import TaskValidationError
 from src.models.task import Task
 
 
 class FileSource:
-    def __init__(self, filepath: str):
-        self.filepath = filepath
+    def __init__(self, filepath: str) -> None:
+        self.filepath: str = filepath
 
     def get_tasks(self) -> Iterable[Task]:
         try:
@@ -21,7 +22,18 @@ class FileSource:
         for item in data:
             if not isinstance(item, dict):
                 raise RuntimeError("Неверный формат задачи в JSON")
-            if "id" not in item or "payload" not in item:
-                raise RuntimeError("Задача должна содержать поля id и payload")
+            if "id" not in item:
+                raise RuntimeError("Задача должна содержать поле id")
+            if "description" not in item and "payload" not in item:
+                raise RuntimeError(
+                    "Задача должна содержать поле description или payload"
+                )
 
-            yield Task(**item)
+            try:
+                yield Task(**item)
+            except TaskValidationError as error:
+                raise RuntimeError(f"Некорректные данные задачи: {error}") from error
+            except TypeError as error:
+                raise RuntimeError(
+                    "JSON содержит неподдерживаемые поля задачи"
+                ) from error
