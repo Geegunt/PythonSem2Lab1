@@ -14,6 +14,17 @@ from src.models.exceptions import TaskDescriptionValidationError
 
 
 class Task:
+    """Доменная модель задачи с защищёнными атрибутами и вычисляемыми свойствами.
+
+    Базовые поля `id`, `description`, `priority`, `status` и `created_at`
+    управляются пользовательскими дескрипторами, поэтому проходят
+    валидацию при каждом присваивании.
+
+    Для обратной совместимости с первой лабораторной сохранён алиас
+    `payload`, а свойство `short_description` демонстрирует работу
+    non-data descriptor поверх основного описания задачи.
+    """
+
     id = TaskIdDescriptor()
     description = TaskDescriptionDescriptor()
     priority = TaskPriorityDescriptor()
@@ -31,7 +42,12 @@ class Task:
         status: str = "new",
         created_at: datetime | None = None,
     ) -> None:
-        """Создаёт задачу и проверяет корректность переданных данных."""
+        """Создаёт экземпляр задачи и инициализирует его в согласованном состоянии.
+
+        Можно передать либо современное поле `description`, либо
+        устаревший алиас `payload`. Если дата создания не указана,
+        используется текущее время в UTC.
+        """
         resolved_description = description if description is not None else payload
         if resolved_description is None:
             raise TaskDescriptionValidationError(
@@ -46,21 +62,27 @@ class Task:
 
     @property
     def payload(self) -> str:
-        """Возвращает описание задачи под именем из старой версии модели."""
+        """Возвращает описание под старым именем поля для обратной совместимости.
+
+        Свойство позволяет старому коду работать с новой моделью без
+        дублирования состояния: фактически `payload` является алиасом
+        к полю `description`.
+        """
         return self.description
 
     @payload.setter
     def payload(self, value: str) -> None:
+        """Обновляет описание задачи через устаревший алиас `payload`."""
         self.description = value
 
     @property
     def is_ready_for_execution(self) -> bool:
-        """Показывает, готова ли задача к запуску в обработку."""
+        """Возвращает `True`, если задача ещё не начата и готова к обработке."""
         return self.status == "new"
 
     @property
     def is_finished(self) -> bool:
-        """Показывает, завершена ли задача успешно или с ошибкой."""
+        """Возвращает `True`, если задача завершена успешно или с ошибкой."""
         return self.status in {"done", "failed"}
 
     def __repr__(self) -> str:
